@@ -17,7 +17,6 @@ This is our Final year project.
 **Step 10:** Type y to redo any command if needed, or n to finish
 **Step 11:** Find recordings in `data/raw/speaker_YOURNAME/`
 
-## How to use this script
 
 **Install packages:**
 - pip install sounddevice
