@@ -27,5 +27,3 @@ This is our Final year project.
 
 Or install all at once: `pip install sounddevice scipy numpy librosa soundfile`
 
-**Steps:**
-(1) Run `python record_audio.py` (2) Enter your speaker name (3) Wait for 3 second countdown (4) Speak the command when it says "RECORDING NOW!" (5) Listen to playback (6) Press y to save, r to redo, or p to play again (7) Press ENTER for next command (8) Repeat for all 30 commands (9) Type y to redo any command at the end or n to finish (10) Find recordings in `data/raw/speaker_YOURNAME/`
