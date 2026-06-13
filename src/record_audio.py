@@ -50,6 +50,7 @@ COMMANDS = [
     "Start ECG",
 ]
 
+
 def record_command(command):
     """Record a single command and return audio data."""
     print(f"\n📢 Say: '{command}'")
@@ -71,6 +72,7 @@ def record_command(command):
     print("✅ Recording done!")
     return audio
 
+
 def playback_audio(audio):
     """Play back the recorded audio so user can hear it."""
     print("🔈 Playing back your recording...")
@@ -78,21 +80,46 @@ def playback_audio(audio):
     sd.wait()
     print("🔈 Playback done!")
 
+
 def save_command(audio, command, speaker_id, command_idx):
-    """Save audio file to disk."""
+    """Save audio file to disk, with error handling and verification."""
     speaker_dir = os.path.join(OUTPUT_DIR, f"speaker_{speaker_id}")
-    os.makedirs(speaker_dir, exist_ok=True)
+
+    try:
+        os.makedirs(speaker_dir, exist_ok=True)
+    except Exception as e:
+        print(f"❌ Error creating directory: {e}")
+        return None
+
     filename = f"cmd{command_idx:02d}_{command.replace(' ', '_')}.wav"
     filepath = os.path.join(speaker_dir, filename)
-    wav.write(filepath, SAMPLE_RATE, audio)
-    print(f"💾 Saved: {filepath}")
-    return filepath
+
+    try:
+        wav.write(filepath, SAMPLE_RATE, audio)
+        if os.path.exists(filepath):
+            print(f"💾 Saved: {filepath}")
+            return filepath
+        else:
+            print(f"❌ Error: File was not created at {filepath}")
+            return None
+    except Exception as e:
+        print(f"❌ Error saving file: {e}")
+        return None
+
 
 def record_with_playback(command, speaker_id, command_idx):
     """Record → Play → Decide to keep or redo."""
     while True:
         # Step 1: Record
         audio = record_command(command)
+
+        if audio is None or len(audio) == 0:
+            print("❌ Recording failed! No audio captured.")
+            choice = input("Try again? (y/n): ").strip().lower()
+            if choice == 'y':
+                continue
+            else:
+                return
 
         # Step 2: Play it back
         playback_audio(audio)
@@ -108,19 +135,27 @@ def record_with_playback(command, speaker_id, command_idx):
             if choice == 'p':
                 playback_audio(audio)
             elif choice == 'y':
-                save_command(audio, command, speaker_id, command_idx)
-                return
+                saved_path = save_command(audio, command, speaker_id, command_idx)
+                if saved_path:
+                    return
+                else:
+                    print("Failed to save recording. Please try again.")
+                    choice = input("Try again? (y/n): ").strip().lower()
+                    if choice == 'y':
+                        break
+                    else:
+                        return
             elif choice == 'r':
                 print("🔄 Redoing...")
                 break
             else:
                 print("Please enter y, r, or p")
 
+
 def redo_specific_command(speaker_id):
     """Let user redo any specific command by number."""
     print("\n📋 Command List:")
     for idx, cmd in enumerate(COMMANDS):
-        # Show tick if file already exists
         speaker_dir = os.path.join(OUTPUT_DIR, f"speaker_{speaker_id}")
         filename = f"cmd{idx+1:02d}_{cmd.replace(' ', '_')}.wav"
         filepath = os.path.join(speaker_dir, filename)
@@ -147,12 +182,16 @@ def redo_specific_command(speaker_id):
         except ValueError:
             print("Please enter a valid number")
 
+
 def main():
     print("=" * 50)
     print("   ShaaVox-Med Audio Recording Tool")
     print("=" * 50)
 
     speaker_id = input("\nEnter speaker name (e.g. aanchal, ankita, hrista, sadiksha): ").strip().lower()
+
+    print(f"\nCurrent working directory: {os.getcwd()}")
+    print(f"Files will be saved to: {os.path.join(os.getcwd(), OUTPUT_DIR)}")
 
     print(f"\nHello {speaker_id}! You will record {len(COMMANDS)} commands.")
     print("Each recording is 3 seconds long.")
@@ -178,7 +217,20 @@ def main():
         redo_specific_command(speaker_id)
 
     print("\n✅ Recording session complete!")
-    print(f"Files saved in: {OUTPUT_DIR}/speaker_{speaker_id}/")
+
+    speaker_dir = os.path.join(OUTPUT_DIR, f"speaker_{speaker_id}")
+    if os.path.exists(speaker_dir):
+        files = [f for f in os.listdir(speaker_dir) if f.endswith('.wav')]
+        print(f"\nSummary for speaker '{speaker_id}':")
+        print(f"   Total files saved: {len(files)}/{len(COMMANDS)}")
+        print(f"   Location: {os.path.abspath(speaker_dir)}")
+
+        if len(files) < len(COMMANDS):
+            missing = len(COMMANDS) - len(files)
+            print(f"   ⚠️  Warning: {missing} files are missing!")
+    else:
+        print(f"❌ Error: Directory {speaker_dir} was not created!")
+
 
 if __name__ == "__main__":
     main()
