@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Shaavox-Med — Surgical Dictation System</title>
+<style>
+  :root {
+    --bg: #f4f6f5;
+    --panel: #ffffff;
+    --ink: #16221f;
+    --muted: #5b6b67;
+    --line: #d8e0dd;
+    --accent: #1f6f5c;
+    --accent-soft: #e4f0ec;
+    --warn: #b3541e;
+    --success: #2b6e4e;
+    --mono: 'IBM Plex Mono', 'SF Mono', Consolas, monospace;
+    --sans: 'IBM Plex Sans', 'Segoe UI', sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--ink);
+    min-height: 100vh;
+  }
+  header {
+    padding: 24px 32px;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    background: var(--panel);
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  header h1 {
+    font-size: 1.5rem;
+    margin: 0;
+    letter-spacing: 0.02em;
+  }
+  header h1 span { color: var(--accent); }
+  header .sub {
+    font-size: 0.85rem;
+    color: var(--muted);
+    font-family: var(--mono);
+  }
+  .layout {
+    display: grid;
+    grid-template-columns: 340px 1fr;
+    gap: 24px;
+    padding: 24px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  @media (max-width: 800px) {
+    .layout { grid-template-columns: 1fr; }
+  }
+  .panel {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+  }
+  .panel h2 {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin: 0 0 20px 0;
+    font-weight: 600;
+  }
+  label {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin: 16px 0 6px;
+    font-weight: 500;
+  }
+  input, select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    font-family: var(--sans);
+    font-size: 0.9rem;
+    background: #fbfcfc;
+    transition: all 0.2s;
+  }
+  input:focus, select:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-soft);
+  }
+
+  .rec-controls {
+    margin-top: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  button {
+    font-family: var(--sans);
+    font-size: 0.9rem;
+    padding: 12px 18px;
+    border-radius: 8px;
+    border: none;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-weight: 500;
+  }
+  button.secondary {
+    background: var(--panel);
+    color: var(--accent);
+    border: 1px solid var(--accent);
+  }
+  button.danger {
+    background: var(--warn);
+    border-color: var(--warn);
+  }
+  button:disabled { opacity: 0.5; cursor: not-allowed; }
+  button:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+
+  .rec-indicator {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    color: var(--warn);
+    min-height: 40px;
+    padding: 8px;
+    background: #fef6e8;
+    border-radius: 8px;
+  }
+  .dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--warn);
+    animation: pulse 1.5s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.3; transform: scale(1.2); }
+  }
+
+  .list-item {
+    padding: 14px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    border: 1px solid transparent;
+    margin-bottom: 8px;
+    transition: all 0.2s;
+  }
+  .list-item:hover { background: var(--accent-soft); transform: translateX(4px); }
+  .list-item.active { 
+    background: var(--accent-soft); 
+    border-color: var(--accent);
+    border-left: 3px solid var(--accent);
+  }
+  .list-item .title {
+    font-weight: 600;
+    margin-bottom: 6px;
+    font-size: 0.9rem;
+  }
+  .list-item .meta { 
+    color: var(--muted); 
+    font-size: 0.75rem; 
+    font-family: var(--mono);
+  }
+
+  .segment {
+    display: grid;
+    grid-template-columns: 80px 1fr auto;
+    gap: 12px;
+    align-items: start;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--line);
+    transition: background 0.2s;
+  }
+  .segment:hover {
+    background: #fafbfb;
+  }
+  .segment .ts {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--accent);
+    padding-top: 8px;
+    font-weight: 500;
+  }
+  .segment textarea {
+    width: 100%;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-family: var(--sans);
+    font-size: 0.92rem;
+    resize: vertical;
+    min-height: 60px;
+    background: transparent;
+    line-height: 1.5;
+    transition: all 0.2s;
+  }
+  .segment textarea:focus { 
+    background: white; 
+    border-color: var(--line); 
+    outline: none;
+    box-shadow: 0 0 0 2px var(--accent-soft);
+  }
+  .segment.corrected .ts::after {
+    content: " ✓";
+    color: var(--success);
+    font-weight: bold;
+  }
+  .segment .save-btn {
+    align-self: flex-start;
+    padding: 6px 14px;
+    font-size: 0.75rem;
+    visibility: hidden;
+  }
+  .segment.dirty .save-btn { visibility: visible; }
+
+  .empty {
+    color: var(--muted);
+    font-size: 0.9rem;
+    padding: 60px 20px;
+    text-align: center;
+    background: #fafbfb;
+    border-radius: 8px;
+  }
+  .transcript-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .transcript-head h2 { 
+    margin: 0; 
+    font-size: 1.2rem; 
+    color: var(--ink); 
+    text-transform: none; 
+    letter-spacing: normal;
+    font-weight: 600;
+  }
+  .status-tag {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    padding: 4px 12px;
+    border-radius: 20px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .status-tag.error { background: #fbe6e0; color: var(--warn); }
+  .status-tag.completed { background: #d4f1e8; color: var(--success); }
+  
+  .audio-player { 
+    width: 100%; 
+    margin: 16px 0 24px;
+    border-radius: 8px;
+  }
+  
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--ink);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    z-index: 1000;
+    animation: slideIn 0.3s ease;
+  }
+  
+  @keyframes slideIn {
+    from {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>ShaaVox<span>-Med</span></h1>
+  <div class="sub">AI-Powered Surgical Dictation System</div>
+</header>
+
+<div class="layout">
+  <div class="panel">
+    <h2>📝 New Dictation</h2>
+    <label>Case Title</label>
+    <input type="text" id="title" placeholder="e.g., Laparoscopic Appendectomy - Case 1042" />
+    <label>Surgeon</label>
+    <input type="text" id="surgeon" placeholder="Dr. Sarah Chen" />
+    <label>Procedure Type</label>
+    <input type="text" id="procedure" placeholder="e.g., Appendectomy, Cholecystectomy" />
+    <label>Patient Reference (De-identified)</label>
+    <input type="text" id="patient" placeholder="e.g., CASE-1042" />
+
+    <div class="rec-controls">
+      <button id="recordBtn">🎤 Start Recording</button>
+      <div class="rec-indicator" id="recIndicator">⚪ Ready to record</div>
+
+      <div style="position: relative; margin-top: 8px;">
+        <hr style="border: none; border-top: 1px solid var(--line); margin: 16px 0;" />
+        <label style="margin-top: 0;">📁 Or Upload Audio File</label>
+        <input type="file" id="fileInput" accept="audio/*" style="margin-top: 8px;" />
+        <button id="uploadBtn" class="secondary" style="margin-top: 8px;">Upload & Transcribe</button>
+      </div>
+    </div>
+
+    <h2 style="margin-top: 32px;">📋 Dictations</h2>
+    <div id="dictationList"></div>
+  </div>
+
+  <div class="panel">
+    <div class="transcript-head">
+      <h2 id="transcriptTitle">Select a dictation</h2>
+      <span class="status-tag" id="statusTag"></span>
+    </div>
+    <audio id="audioPlayer" class="audio-player" controls style="display:none;"></audio>
+    <div id="transcriptBody">
+      <div class="empty">🎙️ No dictation selected yet.<br>Create a new one or select from the list.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+const API = "http://localhost:8000";
+
+let mediaRecorder, audioChunks = [], recording = false;
+let currentDictationId = null;
+let autoRefreshInterval = null;
+
+const recordBtn = document.getElementById("recordBtn");
+const recIndicator = document.getElementById("recIndicator");
+const uploadBtn = document.getElementById("uploadBtn");
+const fileInput = document.getElementById("fileInput");
+const dictationList = document.getElementById("dictationList");
+const transcriptTitle = document.getElementById("transcriptTitle");
+const transcriptBody = document.getElementById("transcriptBody");
+const statusTag = document.getElementById("statusTag");
+const audioPlayer = document.getElementById("audioPlayer");
+
+function showToast(message, isError = false) {
+  const toast = document.createElement('div');
+  toast.className = 'toast';
+  toast.style.background = isError ? '#b3541e' : '#16221f';
+  toast.textContent = message;
+  document.body.appendChild(toast);
+  setTimeout(() => toast.remove(), 3000);
+}
+
+function fmtTime(sec) {
+  if (sec === null || sec === undefined) return "--:--";
+  const m = Math.floor(sec / 60);
+  const s = Math.floor(sec % 60);
+  return `${m}:${s.toString().padStart(2,'0')}`;
+}
+
+async function createDictation() {
+  const payload = {
+    title: document.getElementById("title").value || "Untitled Dictation",
+    surgeon_name: document.getElementById("surgeon").value || null,
+    procedure_type: document.getElementById("procedure").value || null,
+    patient_ref: document.getElementById("patient").value || null,
+  };
+  
+  try {
+    const res = await fetch(`${API}/dictations`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+    const data = await res.json();
+    showToast(`✅ Created dictation: ${payload.title}`);
+    return data.id;
+  } catch (err) {
+    showToast("❌ Failed to create dictation: " + err.message, true);
+    throw err;
+  }
+}
+
+recordBtn.addEventListener("click", async () => {
+  if (!recording) {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      mediaRecorder = new MediaRecorder(stream);
+      audioChunks = [];
+      mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+      mediaRecorder.onstop = async () => {
+        const blob = new Blob(audioChunks, { type: "audio/webm" });
+        showToast("🎙️ Processing recording...");
+        await sendAudio(blob, "recording.webm");
+        stream.getTracks().forEach(t => t.stop());
+      };
+      mediaRecorder.start();
+      recording = true;
+      recordBtn.textContent = "⏹️ Stop Recording";
+      recordBtn.classList.add("danger");
+      recIndicator.innerHTML = `<span class="dot"></span> 🔴 Recording in progress... Speak clearly`;
+    } catch (err) {
+      showToast("❌ Microphone access denied: " + err.message, true);
+    }
+  } else {
+    mediaRecorder.stop();
+    recording = false;
+    recordBtn.textContent = "🎤 Start Recording";
+    recordBtn.classList.remove("danger");
+    recIndicator.innerHTML = `⏳ Processing audio...`;
+  }
+});
+
+uploadBtn.addEventListener("click", async () => {
+  const file = fileInput.files[0];
+  if (!file) { 
+    showToast("⚠️ Please select an audio file first", true);
+    return; 
+  }
+  await sendAudio(file, file.name);
+});
+
+async function sendAudio(fileOrBlob, filename) {
+  uploadBtn.disabled = true;
+  recordBtn.disabled = true;
+  
+  try {
+    const dictationId = await createDictation();
+    const form = new FormData();
+    form.append("file", fileOrBlob, filename);
+
+    const res = await fetch(`${API}/dictations/${dictationId}/audio`, {
+      method: "POST",
+      body: form,
+    });
+    
+    if (!res.ok) throw new Error(await res.text());
+    const data = await res.json();
+
+    showToast(`🎉 Audio uploaded! Transcribing...`);
+    recIndicator.innerHTML = `✅ Uploaded — transcribing in background`;
+    
+    await loadDictations();
+    selectDictation(data.id);
+    
+    // Start polling for transcription completion
+    startPolling(dictationId);
+    
+  } catch (err) {
+    showToast(`❌ Error: ${err.message}`, true);
+    recIndicator.innerHTML = `⚠️ Error occurred`;
+    console.error(err);
+  } finally {
+    uploadBtn.disabled = false;
+    recordBtn.disabled = false;
+    setTimeout(() => {
+      if (!recording) recIndicator.innerHTML = `⚪ Ready`;
+    }, 3000);
+  }
+}
+
+async function loadDictations() {
+  try {
+    const res = await fetch(`${API}/dictations`);
+    const items = await res.json();
+    dictationList.innerHTML = "";
+    
+    if (items.length === 0) {
+      dictationList.innerHTML = `<div class="empty" style="padding:20px;">No dictations yet.<br>Create your first one above!</div>`;
+      return;
+    }
+    
+    items.reverse().forEach(d => {
+      const el = document.createElement("div");
+      el.className = "list-item" + (d.id === currentDictationId ? " active" : "");
+      el.innerHTML = `
+        <div class="title">${escapeHtml(d.title)}</div>
+        <div class="meta">
+          ${d.procedure_type || "General"} · 
+          <span class="status-${d.status}">${d.status}</span>
+          ${d.duration_seconds ? " · " + fmtTime(d.duration_seconds) : ""}
+          ${d.created_at ? " · " + new Date(d.created_at).toLocaleDateString() : ""}
+        </div>
+      `;
+      el.onclick = () => selectDictation(d.id);
+      dictationList.appendChild(el);
+    });
+  } catch (err) {
+    console.error("Failed to load dictations:", err);
+    dictationList.innerHTML = `<div class="empty">⚠️ Failed to load dictations</div>`;
+  }
+}
+
+function escapeHtml(str) {
+  if (!str) return '';
+  return str.replace(/[&<>]/g, function(m) {
+    if (m === '&') return '&amp;';
+    if (m === '<') return '&lt;';
+    if (m === '>') return '&gt;';
+    return m;
+  });
+}
+
+async function selectDictation(id) {
+  currentDictationId = id;
+  if (autoRefreshInterval) clearInterval(autoRefreshInterval);
+  
+  await loadDictations();
+  await loadDictationDetails(id);
+}
+
+async function loadDictationDetails(id) {
+  try {
+    const res = await fetch(`${API}/dictations/${id}`);
+    const d = await res.json();
+
+    transcriptTitle.textContent = d.title;
+    statusTag.textContent = d.status.toUpperCase();
+    statusTag.className = "status-tag " + d.status;
+
+    if (d.audio_url) {
+      audioPlayer.src = API + d.audio_url;
+      audioPlayer.style.display = "block";
+    } else {
+      audioPlayer.style.display = "none";
+    }
+
+    if (d.status === 'transcribing') {
+      transcriptBody.innerHTML = `<div class="empty">
+        <div style="font-size: 2rem; margin-bottom: 12px;">🔄</div>
+        <strong>Transcribing in progress...</strong><br>
+        This may take a few seconds. The transcript will appear automatically.
+      </div>`;
+      startPolling(id);
+      return;
+    }
+
+    if (!d.segments || d.segments.length === 0) {
+      transcriptBody.innerHTML = `<div class="empty">
+        <div style="font-size: 2rem; margin-bottom: 12px;">📝</div>
+        No transcript yet.<br>
+        Upload an audio file to generate the transcript.
+      </div>`;
+      return;
+    }
+
+    transcriptBody.innerHTML = "";
+    d.segments.forEach(seg => {
+      const row = document.createElement("div");
+      row.className = "segment" + (seg.is_corrected ? " corrected" : "");
+      row.innerHTML = `
+        <div class="ts">${fmtTime(seg.start_time)}</div>
+        <textarea data-id="${seg.id}" rows="2">${escapeHtml(seg.text)}</textarea>
+        <button class="save-btn secondary">💾 Save</button>
+      `;
+      const textarea = row.querySelector("textarea");
+      const saveBtn = row.querySelector(".save-btn");
+
+      autoGrow(textarea);
+      textarea.addEventListener("input", () => {
+        autoGrow(textarea);
+        row.classList.add("dirty");
+      });
+      saveBtn.addEventListener("click", async () => {
+        try {
+          await fetch(`${API}/segments/${seg.id}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ text: textarea.value }),
+          });
+          row.classList.remove("dirty");
+          row.classList.add("corrected");
+          showToast("✅ Segment saved successfully");
+        } catch (err) {
+          showToast("❌ Failed to save segment", true);
+        }
+      });
+
+      transcriptBody.appendChild(row);
+    });
+  } catch (err) {
+    console.error("Failed to load dictation details:", err);
+    transcriptBody.innerHTML = `<div class="empty">⚠️ Error loading dictation</div>`;
+  }
+}
+
+function startPolling(dictId) {
+  if (autoRefreshInterval) clearInterval(autoRefreshInterval);
+  
+  autoRefreshInterval = setInterval(async () => {
+    if (currentDictationId === dictId) {
+      try {
+        const res = await fetch(`${API}/dictations/${dictId}`);
+        const d = await res.json();
+        
+        if (d.status !== 'transcribing') {
+          clearInterval(autoRefreshInterval);
+          await loadDictationDetails(dictId);
+          await loadDictations();
+          if (d.status === 'completed') {
+            showToast("✨ Transcription complete!");
+          }
+        }
+      } catch (err) {
+        console.error("Polling error:", err);
+      }
+    } else {
+      clearInterval(autoRefreshInterval);
+    }
+  }, 2000);
+}
+
+function autoGrow(el) {
+  el.style.height = "auto";
+  el.style.height = (el.scrollHeight) + "px";
+}
+
+// Initial load
+loadDictations();
+
+async function checkBackendHealth() {
+    try {
+        const res = await fetch(`${API}/health`);
+        const data = await res.json();
+        
+        if (data.whisper_available) {
+            console.log("✅ Real transcription (Whisper) is available!");
+        } else {
+            console.log("⚠️ Using simulated transcription");
+        }
+    } catch (err) {
+        console.error("Backend health check failed:", err);
+    }
+}
+
+checkBackendHealth();
+</script>
+</body>
+</html>
