@@ -1,0 +1,464 @@
+{
+  "overall": {
+    "shaavox_med_wer": 0.5585585585585585,
+    "baseline_wer": 0.7117117117117117,
+    "shaavox_med_accuracy": 0.3541666666666667,
+    "baseline_accuracy": 0.2708333333333333
+  },
+  "by_noise_level": {
+    "clean": {
+      "count": 16,
+      "shaavox_accuracy": 0.375,
+      "baseline_accuracy": 0.3125
+    },
+    "snr_0db": {
+      "count": 13,
+      "shaavox_accuracy": 0.3076923076923077,
+      "baseline_accuracy": 0.15384615384615385
+    },
+    "snr_10db": {
+      "count": 9,
+      "shaavox_accuracy": 0.3333333333333333,
+      "baseline_accuracy": 0.2222222222222222
+    },
+    "snr_20db": {
+      "count": 10,
+      "shaavox_accuracy": 0.4,
+      "baseline_accuracy": 0.4
+    }
+  },
+  "details": [
+    {
+      "audio_path": "data/noisy\\speaker_sadiksha\\snr_20db\\cmd12_Stop_ventilator_snr20db.wav",
+      "reference": "stop ventilator",
+      "shaavox_med_hypothesis": "stop ventilator",
+      "baseline_hypothesis": "stop ventilator",
+      "noise_level": "snr_20db",
+      "shaavox_correct": true,
+      "baseline_correct": true
+    },
+    {
+      "audio_path": "data/noisy\\speaker_sadiksha\\snr_20db\\cmd21_Amoxicillin_snr20db.wav",
+      "reference": "amoxicillin",
+      "shaavox_med_hypothesis": "amonte selin",
+      "baseline_hypothesis": "amor cecelline",
+      "noise_level": "snr_20db",
+      "shaavox_correct": false,
+      "baseline_correct": false
+    },
+    {
+      "audio_path": "data/noisy\\speaker_aanchal\\snr_0db\\cmd27_End_procedure_snr0db.wav",
+      "reference": "end procedure",
+      "shaavox_med_hypothesis": "indoor procedure",
+      "baseline_hypothesis": "and proceed to",
+      "noise_level": "snr_0db",
+      "shaavox_correct": false,
+      "baseline_correct": false
+    },
+    {
+      "audio_path": "data/noisy\\speaker_sadiksha\\snr_10db\\cmd16_Patient_is_critical_snr10db.wav",
+      "reference": "patient is critical",
+      "shaavox_med_hypothesis": "sint is critical",
+      "baseline_hypothesis": "sint is critical",
+      "noise_level": "snr_10db",
+      "shaavox_correct": false,
+      "baseline_correct": false
+    },
+    {
+      "audio_path": "data/noisy\\speaker_sadiksha\\snr_20db\\cmd11_Start_ventilator_snr20db.wav",
+      "reference": "start ventilator",
+      "shaavox_med_hypothesis": "start ventilator",
+      "baseline_hypothesis": "start ventilator",
+      "noise_level": "snr_20db",
+      "shaavox_correct": true,
+      "baseline_correct": true
+    },
+    {
+      "audio_path": "data/raw\\speaker_sadiksha\\cmd10_Decrease_oxygen_flow.wav",
+      "reference": "decrease oxygen flow",
+      "shaavox_med_hypothesis": "please oxygen flow",
+      "baseline_hypothesis": "please oxygen flow",
+      "noise_level": "clean",
+      "shaavox_correct": false,
+      "baseline_correct": false
+    },
+    {
+      "audio_path": "data/noisy\\speaker_sadiksha\\snr_10db\\cmd26_Begin_procedure_snr10db.wav",
+      "reference": "begin procedure",
+      "shaavox_med_hypothesis": "begin procedure",
+      "baseline_hypothesis": "begin procedure",
+      "noise_level": "snr_10db",
+      "shaavox_correct": true,
+      "baseline_correct": true
+    },
+    {
+      "audio_path": "data/noisy\\speaker_aanchal\\snr_0db\\cmd28_Prepare_operating_room_snr0db.wav",
+      "reference": "prepare operating room",
+      "shaavox_med_hypothesis": "prepare operating room",
+      "baseline_hypothesis": "prepare operating room",
+      "noise_level": "snr_0db",
+      "shaavox_correct": true,
+      "baseline_correct": true
+    },
+    {
+      "audio_path": "data/noisy\\speaker_sadiksha\\snr_20db\\cmd15_Patient_is_stable_snr20db.wav",
+      "reference": "patient is stable",
+      "shaavox_med_hypothesis": "i think hes a stepper",
+      "baseline_hypothesis": "i think hes a stepper",
+      "noise_level": "snr_20db",
+      "shaavox_correct": false,
+      "baseline_correct": false
+    },
+    {
+      "audio_path": "data/noisy\\speaker_sadiksha\\snr_0db\\cmd29_Request_blood_sample_snr0db.wav",
+      "reference": "request blood sample",
+      "shaavox_med_hypothesis": "request blood sample",
+      "baseline_hypothesis": "im gonna go to the next vlog bye",
+      "noise_level": "snr_0db",
+      "shaavox_correct": true,
+      "baseline_correct": false
+    },
+    {
+      "audio_path": "data/raw\\speaker_sadiksha\\cmd11_Start_ventilator.wav",
+      "reference": "start ventilator",
+      "shaavox_med_hypothesis": "start ventilator",
+      "baseline_hypothesis": "start ventilator",
+      "noise_level": "clean",
+      "shaavox_correct": true,
+      "baseline_correct": true
+    },
+    {
+      "audio_path": "data/noisy\\speaker_sadiksha\\snr_10db\\cmd15_Patient_is_stable_snr10db.wav",
+      "reference": "patient is stable",
+      "shaavox_med_hypothesis": "i think its a stupid",
+      "baseline_hypothesis": "i think it is a stupid",
+      "noise_level": "snr_10db",
+      "shaavox_correct": false,
+      "baseline_correct": false
+    },
+    {
+      "audio_path": "data/raw\\speaker_aanchal\\cmd02_Measure_heart_rate.wav",
+      "reference": "measure heart rate",
+      "shaavox_med_hypothesis": "major hotdrit",
+      "baseline_hypothesis": "major hotdrit",
+      "noise_level": "clean",
+      "shaavox_correct": false,
+      "baseline_correct": false
+    },
+    {
+      "audio_path": "data/noisy\\speaker_aanchal\\snr_0db\\cmd12_Stop_ventilator_snr0db.wav",
+      "reference": "stop ventilator",
+      "shaavox_med_hypothesis": "stop the indicator",
+      "baseline_hypothesis": "stop nintinator",
+      "noise_level": "snr_0db",
+      "shaavox_correct": false,
+      "baseline_correct": false
+    },
+    {
+      "audio_path": "data/noisy\\speaker_sadiksha\\snr_0db\\cmd01_Check_blood_pressure_snr0db.wav",
+      "reference": "check blood pressure",
+      "shaavox_med_hypothesis": "take blood pressure",
+      "baseline_hypothesis": "take blood pressure",
+      "noise_level": "snr_0db",
+      "shaavox_correct": false,
+      "baseline_correct": false
+    },
+    {
+      "audio_path": "data/noisy\\speaker_aanchal\\snr_10db\\cmd25_Metformin_snr10db.wav",
+      "reference": "metformin",
+      "shaavox_med_hypothesis": "meant for me",
+      "baseline_hypothesis": "met for me",
+      "noise_level": "snr_10db",
+      "shaavox_correct": false,
+      "baseline_correct": false
+    },
+    {
+      "audio_path": "data/raw\\speaker_sadiksha\\cmd27_End_procedure.wav",
+      "reference": "end procedure",
+      "shaavox_med_hypothesis": "procedure",
+      "baseline_hypothesis": "and procedure",
+      "noise_level": "clean",
+      "shaavox_correct": false,
+      "baseline_correct": false
+    },
+    {
+      "audio_path": "data/noisy\\speaker_aanchal\\snr_10db\\cmd18_Call_the_nurse_snr10db.wav",
+      "reference": "call the nurse",
+      "shaavox_med_hypothesis": "call the nurse",
+      "baseline_hypothesis": "call the nurse",
+      "noise_level": "snr_10db",
+      "shaavox_correct": true,
+      "baseline_correct": true
+    },
+    {
+      "audio_path": "data/noisy\\speaker_sadiksha\\snr_20db\\cmd18_Call_the_nurse_snr20db.wav",
+      "reference": "call the nurse",
+      "shaavox_med_hypothesis": "boll the nurse",
+      "baseline_hypothesis": "bon denours",
+      "noise_level": "snr_20db",
+      "shaavox_correct": false,
+      "baseline_correct": false
+    },
+    {
+      "audio_path": "data/noisy\\speaker_sadiksha\\snr_0db\\cmd30_Start_ECG_snr0db.wav",
+      "reference": "start ecg",
+      "shaavox_med_hypothesis": "start ecz",
+      "baseline_hypothesis": "start ecz",
+      "noise_level": "snr_0db",
+      "shaavox_correct": false,
+      "baseline_correct": false
+    },
+    {
+      "audio_path": "data/noisy\\speaker_sadiksha\\snr_0db\\cmd17_Patient_needs_medication_snr0db.wav",
+      "reference": "patient needs medication",
+      "shaavox_med_hypothesis": "basin needs medication",
+      "baseline_hypothesis": "basin needs medication",
+      "noise_level": "snr_0db",
+      "shaavox_correct": false,
+      "baseline_correct": false
+    },
+    {
+      "audio_path": "data/noisy\\speaker_sadiksha\\snr_10db\\cmd04_Check_oxygen_saturation_snr10db.wav",
+      "reference": "check oxygen saturation",
+      "shaavox_med_hypothesis": "incoxygen saturation",
+      "baseline_hypothesis": "ick oxygen saturation",
+      "noise_level": "snr_10db",
+      "shaavox_correct": false,
+      "baseline_correct": false
+    },
+    {
+      "audio_path": "data/raw\\speaker_sadiksha\\cmd21_Amoxicillin.wav",
+      "reference": "amoxicillin",
+      "shaavox_med_hypothesis": "amonte selin",
+      "baseline_hypothesis": "im on the ceiling",
+      "noise_level": "clean",
+      "shaavox_correct": false,
+      "baseline_correct": false
+    },
+    {
+      "audio_path": "data/noisy\\speaker_aanchal\\snr_20db\\cmd24_Insulin_snr20db.wav",
+      "reference": "insulin",
+      "shaavox_med_hypothesis": "insulin",
+      "baseline_hypothesis": "insulin",
+      "noise_level": "snr_20db",
+      "shaavox_correct": true,
+      "baseline_correct": true
+    },
+    {
+      "audio_path": "data/noisy\\speaker_sadiksha\\snr_20db\\cmd28_Prepare_operating_room_snr20db.wav",
+      "reference": "prepare operating room",
+      "shaavox_med_hypothesis": "repair operating room",
+      "baseline_hypothesis": "repair operating room",
+      "noise_level": "snr_20db",
+      "shaavox_correct": false,
+      "baseline_correct": false
+    },
+    {
+      "audio_path": "data/noisy\\speaker_sadiksha\\snr_0db\\cmd05_Monitor_pulse_snr0db.wav",
+      "reference": "monitor pulse",
+      "shaavox_med_hypothesis": "hornido balls",
+      "baseline_hypothesis": "hornidore balls",
+      "noise_level": "snr_0db",
+      "shaavox_correct": false,
+      "baseline_correct": false
+    },
+    {
+      "audio_path": "data/noisy\\speaker_aanchal\\snr_20db\\cmd10_Decrease_oxygen_flow_snr20db.wav",
+      "reference": "decrease oxygen flow",
+      "shaavox_med_hypothesis": "decrease oxygen flow",
+      "baseline_hypothesis": "decrease oxygen flow",
+      "noise_level": "snr_20db",
+      "shaavox_correct": true,
+      "baseline_correct": true
+    },
+    {
+      "audio_path": "data/raw\\speaker_sadiksha\\cmd30_Start_ECG.wav",
+      "reference": "start ecg",
+      "shaavox_med_hypothesis": "start ecz",
+      "baseline_hypothesis": "start ecz",
+      "noise_level": "clean",
+      "shaavox_correct": false,
+      "baseline_correct": false
+    },
+    {
+      "audio_path": "data/raw\\speaker_sadiksha\\cmd26_Begin_procedure.wav",
+      "reference": "begin procedure",
+      "shaavox_med_hypothesis": "begin procedure",
+      "baseline_hypothesis": "begin procedure",
+      "noise_level": "clean",
+      "shaavox_correct": true,
+      "baseline_correct": true
+    },
+    {
+      "audio_path": "data/raw\\speaker_aanchal\\cmd24_Insulin.wav",
+      "reference": "insulin",
+      "shaavox_med_hypothesis": "insulin",
+      "baseline_hypothesis": "insulin",
+      "noise_level": "clean",
+      "shaavox_correct": true,
+      "baseline_correct": true
+    },
+    {
+      "audio_path": "data/raw\\speaker_aanchal\\cmd08_Stop_IV_drip.wav",
+      "reference": "stop iv drip",
+      "shaavox_med_hypothesis": "youtube",
+      "baseline_hypothesis": "youtube",
+      "noise_level": "clean",
+      "shaavox_correct": false,
+      "baseline_correct": false
+    },
+    {
+      "audio_path": "data/raw\\speaker_aanchal\\cmd09_Increase_oxygen_flow.wav",
+      "reference": "increase oxygen flow",
+      "shaavox_med_hypothesis": "then flow in bridge oxygen flow",
+      "baseline_hypothesis": "then flow in preoxys and flow",
+      "noise_level": "clean",
+      "shaavox_correct": false,
+      "baseline_correct": false
+    },
+    {
+      "audio_path": "data/noisy\\speaker_aanchal\\snr_10db\\cmd19_Request_doctor_snr10db.wav",
+      "reference": "request doctor",
+      "shaavox_med_hypothesis": "equest doctor",
+      "baseline_hypothesis": "the quest doctor",
+      "noise_level": "snr_10db",
+      "shaavox_correct": false,
+      "baseline_correct": false
+    },
+    {
+      "audio_path": "data/noisy\\speaker_sadiksha\\snr_0db\\cmd02_Measure_heart_rate_snr0db.wav",
+      "reference": "measure heart rate",
+      "shaavox_med_hypothesis": "miserhardt freight",
+      "baseline_hypothesis": "miser high free",
+      "noise_level": "snr_0db",
+      "shaavox_correct": false,
+      "baseline_correct": false
+    },
+    {
+      "audio_path": "data/raw\\speaker_aanchal\\cmd23_Morphine.wav",
+      "reference": "morphine",
+      "shaavox_med_hypothesis": "more fin",
+      "baseline_hypothesis": "more fin",
+      "noise_level": "clean",
+      "shaavox_correct": false,
+      "baseline_correct": false
+    },
+    {
+      "audio_path": "data/noisy\\speaker_aanchal\\snr_20db\\cmd20_Paracetamol_snr20db.wav",
+      "reference": "paracetamol",
+      "shaavox_med_hypothesis": "tara sitamul",
+      "baseline_hypothesis": "tara sitamon",
+      "noise_level": "snr_20db",
+      "shaavox_correct": false,
+      "baseline_correct": false
+    },
+    {
+      "audio_path": "data/noisy\\speaker_sadiksha\\snr_20db\\cmd27_End_procedure_snr20db.wav",
+      "reference": "end procedure",
+      "shaavox_med_hypothesis": "and procedure",
+      "baseline_hypothesis": "and procedure",
+      "noise_level": "snr_20db",
+      "shaavox_correct": false,
+      "baseline_correct": false
+    },
+    {
+      "audio_path": "data/noisy\\speaker_sadiksha\\snr_0db\\cmd24_Insulin_snr0db.wav",
+      "reference": "insulin",
+      "shaavox_med_hypothesis": "insulin",
+      "baseline_hypothesis": "insulin",
+      "noise_level": "snr_0db",
+      "shaavox_correct": true,
+      "baseline_correct": true
+    },
+    {
+      "audio_path": "data/raw\\speaker_aanchal\\cmd27_End_procedure.wav",
+      "reference": "end procedure",
+      "shaavox_med_hypothesis": "indu procedure",
+      "baseline_hypothesis": "indu procedure",
+      "noise_level": "clean",
+      "shaavox_correct": false,
+      "baseline_correct": false
+    },
+    {
+      "audio_path": "data/noisy\\speaker_sadiksha\\snr_10db\\cmd09_Increase_oxygen_flow_snr10db.wav",
+      "reference": "increase oxygen flow",
+      "shaavox_med_hypothesis": "increase oxygen flow",
+      "baseline_hypothesis": "the police oxygen flow",
+      "noise_level": "snr_10db",
+      "shaavox_correct": true,
+      "baseline_correct": false
+    },
+    {
+      "audio_path": "data/raw\\speaker_sadiksha\\cmd06_Check_respiratory_rate.wav",
+      "reference": "check respiratory rate",
+      "shaavox_med_hypothesis": "take respiratory aid",
+      "baseline_hypothesis": "take respiratory aid",
+      "noise_level": "clean",
+      "shaavox_correct": false,
+      "baseline_correct": false
+    },
+    {
+      "audio_path": "data/raw\\speaker_sadiksha\\cmd28_Prepare_operating_room.wav",
+      "reference": "prepare operating room",
+      "shaavox_med_hypothesis": "prepare operating room",
+      "baseline_hypothesis": "prepare operating room",
+      "noise_level": "clean",
+      "shaavox_correct": true,
+      "baseline_correct": true
+    },
+    {
+      "audio_path": "data/noisy\\speaker_aanchal\\snr_0db\\cmd03_Record_temperature_snr0db.wav",
+      "reference": "record temperature",
+      "shaavox_med_hypothesis": "record temperature",
+      "baseline_hypothesis": "he caught temperature",
+      "noise_level": "snr_0db",
+      "shaavox_correct": true,
+      "baseline_correct": false
+    },
+    {
+      "audio_path": "data/noisy\\speaker_aanchal\\snr_0db\\cmd11_Start_ventilator_snr0db.wav",
+      "reference": "start ventilator",
+      "shaavox_med_hypothesis": "see you later start from here",
+      "baseline_hypothesis": "see you later",
+      "noise_level": "snr_0db",
+      "shaavox_correct": false,
+      "baseline_correct": false
+    },
+    {
+      "audio_path": "data/noisy\\speaker_sadiksha\\snr_10db\\cmd10_Decrease_oxygen_flow_snr10db.wav",
+      "reference": "decrease oxygen flow",
+      "shaavox_med_hypothesis": "please oxygen flow",
+      "baseline_hypothesis": "please oxygen flow",
+      "noise_level": "snr_10db",
+      "shaavox_correct": false,
+      "baseline_correct": false
+    },
+    {
+      "audio_path": "data/raw\\speaker_aanchal\\cmd07_Start_IV_drip.wav",
+      "reference": "start iv drip",
+      "shaavox_med_hypothesis": "start iv drip",
+      "baseline_hypothesis": "start iv drip",
+      "noise_level": "clean",
+      "shaavox_correct": true,
+      "baseline_correct": true
+    },
+    {
+      "audio_path": "data/raw\\speaker_aanchal\\cmd29_Request_blood_sample.wav",
+      "reference": "request blood sample",
+      "shaavox_med_hypothesis": "request blood sample",
+      "baseline_hypothesis": "request blot sample",
+      "noise_level": "clean",
+      "shaavox_correct": true,
+      "baseline_correct": false
+    },
+    {
+      "audio_path": "data/noisy\\speaker_sadiksha\\snr_0db\\cmd14_Reset_monitor_snr0db.wav",
+      "reference": "reset monitor",
+      "shaavox_med_hypothesis": "visit monitor",
+      "baseline_hypothesis": "visit monitor",
+      "noise_level": "snr_0db",
+      "shaavox_correct": false,
+      "baseline_correct": false
+    }
+  ]
+}
