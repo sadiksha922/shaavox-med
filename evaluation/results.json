@@ -1,8 +1,8 @@
 {
   "overall": {
-    "shaavox_med_wer": 0.5585585585585585,
+    "shaavox_med_wer": 0.5675675675675675,
     "baseline_wer": 0.7117117117117117,
-    "shaavox_med_accuracy": 0.3541666666666667,
+    "shaavox_med_accuracy": 0.375,
     "baseline_accuracy": 0.2708333333333333
   },
   "by_noise_level": {
@@ -18,7 +18,7 @@
     },
     "snr_10db": {
       "count": 9,
-      "shaavox_accuracy": 0.3333333333333333,
+      "shaavox_accuracy": 0.4444444444444444,
       "baseline_accuracy": 0.2222222222222222
     },
     "snr_20db": {
@@ -130,7 +130,7 @@
     {
       "audio_path": "data/noisy\\speaker_sadiksha\\snr_10db\\cmd15_Patient_is_stable_snr10db.wav",
       "reference": "patient is stable",
-      "shaavox_med_hypothesis": "i think its a stupid",
+      "shaavox_med_hypothesis": "i think it is a stupid",
       "baseline_hypothesis": "i think it is a stupid",
       "noise_level": "snr_10db",
       "shaavox_correct": false,
@@ -229,7 +229,7 @@
     {
       "audio_path": "data/raw\\speaker_sadiksha\\cmd21_Amoxicillin.wav",
       "reference": "amoxicillin",
-      "shaavox_med_hypothesis": "amonte selin",
+      "shaavox_med_hypothesis": "im on the ceiling",
       "baseline_hypothesis": "im on the ceiling",
       "noise_level": "clean",
       "shaavox_correct": false,
@@ -319,16 +319,16 @@
     {
       "audio_path": "data/noisy\\speaker_aanchal\\snr_10db\\cmd19_Request_doctor_snr10db.wav",
       "reference": "request doctor",
-      "shaavox_med_hypothesis": "equest doctor",
+      "shaavox_med_hypothesis": "request doctor",
       "baseline_hypothesis": "the quest doctor",
       "noise_level": "snr_10db",
-      "shaavox_correct": false,
+      "shaavox_correct": true,
       "baseline_correct": false
     },
     {
       "audio_path": "data/noisy\\speaker_sadiksha\\snr_0db\\cmd02_Measure_heart_rate_snr0db.wav",
       "reference": "measure heart rate",
-      "shaavox_med_hypothesis": "miserhardt freight",
+      "shaavox_med_hypothesis": "miser hartburg",
       "baseline_hypothesis": "miser high free",
       "noise_level": "snr_0db",
       "shaavox_correct": false,
@@ -346,7 +346,7 @@
     {
       "audio_path": "data/noisy\\speaker_aanchal\\snr_20db\\cmd20_Paracetamol_snr20db.wav",
       "reference": "paracetamol",
-      "shaavox_med_hypothesis": "tara sitamul",
+      "shaavox_med_hypothesis": "tara sitamon",
       "baseline_hypothesis": "tara sitamon",
       "noise_level": "snr_20db",
       "shaavox_correct": false,
@@ -427,7 +427,7 @@
     {
       "audio_path": "data/noisy\\speaker_sadiksha\\snr_10db\\cmd10_Decrease_oxygen_flow_snr10db.wav",
       "reference": "decrease oxygen flow",
-      "shaavox_med_hypothesis": "please oxygen flow",
+      "shaavox_med_hypothesis": "eclipse oxygen flow",
       "baseline_hypothesis": "please oxygen flow",
       "noise_level": "snr_10db",
       "shaavox_correct": false,
