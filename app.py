@@ -32,6 +32,23 @@ COMMANDS = [
     "request blood sample", "start ecg",
 ]
 
+def get_speaker_count():
+    raw_dir = "data/raw"
+    if not os.path.exists(raw_dir):
+        return 0
+    return len([f for f in os.listdir(raw_dir) 
+                if os.path.isdir(os.path.join(raw_dir, f)) 
+                and f.startswith("speaker_")])
+
+def get_dataset_count():
+    manifest = "data/processed/dataset.json"
+    if not os.path.exists(manifest):
+        return 0
+    with open(manifest) as f:
+        return len(json.load(f))
+
+
+
 CATEGORY_MAP = {
     "🫀 Vital Signs":       ["check blood pressure", "measure heart rate", "record temperature", "check oxygen saturation", "monitor pulse", "check respiratory rate"],
     "⚙️ Equipment Control": ["start iv drip", "stop iv drip", "increase oxygen flow", "decrease oxygen flow", "start ventilator", "stop ventilator", "silence alarm", "reset monitor"],
@@ -51,21 +68,42 @@ def load_model():
     return model
 
 def match_command(transcript):
+    import difflib
     t = transcript.lower().strip()
+    
+    # Remove common filler words Whisper adds
+    fillers = ["thank you", "thanks", "okay", "ok", "um", "uh", 
+               "please", "the", "a", "and", "i", "you", "me"]
+    cleaned = " ".join(w for w in t.split() if w not in fillers)
+    if not cleaned:
+        cleaned = t
+
+    # 1. Exact match on cleaned
+    if cleaned in COMMANDS:
+        return cleaned, "Exact"
+
+    # 2. Exact match on original
     if t in COMMANDS:
         return t, "Exact"
-    for cmd in COMMANDS:
-        if cmd in t or t in cmd:
-            return cmd, "Partial"
-    words = set(t.split())
+
+    # 3. Best similarity score across ALL commands (not first match)
     best_cmd, best_score = None, 0
     for cmd in COMMANDS:
-        score = len(words & set(cmd.split()))
-        if score > best_score:
-            best_score, best_cmd = score, cmd
-    if best_score >= 1:
-        return best_cmd, "Fuzzy"
+        # Full phrase similarity
+        ratio = difflib.SequenceMatcher(None, cleaned, cmd).ratio()
+        # Word overlap bonus
+        overlap = len(set(cleaned.split()) & set(cmd.split()))
+        combined = ratio + (overlap * 0.3)
+        if combined > best_score:
+            best_score = combined
+            best_cmd = cmd
+
+    if best_score > 0.35:
+        match_type = "Exact" if best_score > 0.85 else "Partial" if best_score > 0.6 else "Fuzzy"
+        return best_cmd, match_type
+
     return None, "None"
+
 
 def get_category(command):
     for cat, cmds in CATEGORY_MAP.items():
@@ -82,14 +120,32 @@ def record_and_transcribe(model):
     )
     sd.wait()
     audio = audio.flatten()
+
+    # Stronger noise reduction
     noise_sample = audio[:SAMPLE_RATE // 2]
     audio = nr.reduce_noise(
-        y=audio, sr=SAMPLE_RATE,
-        y_noise=noise_sample, prop_decrease=0.75
+        y=audio,
+        sr=SAMPLE_RATE,
+        y_noise=noise_sample,
+        prop_decrease=0.9,      # stronger reduction
+        stationary=True,        # treats noise as constant background
+        n_std_thresh_stationary=1.2
     )
+
+    # Normalize audio volume
+    max_val = np.max(np.abs(audio))
+    if max_val > 0:
+        audio = audio / max_val * 0.95
+
+    # Transcribe
     audio = whisper.pad_or_trim(audio.astype(np.float32))
     mel = whisper.log_mel_spectrogram(audio).to(model.device)
-    options = whisper.DecodingOptions(language="en", fp16=False)
+    options = whisper.DecodingOptions(
+        language="en",
+        fp16=False,
+        temperature=0.0,        # greedy decoding — more consistent
+        without_timestamps=True
+    )
     result = whisper.decode(model, mel, options)
     return result.text.strip()
 
@@ -114,8 +170,10 @@ st.markdown("---")
 # ── Metrics ────────────────────────────────────────────
 st.subheader("📊 System Overview")
 c1, c2, c3, c4 = st.columns(4)
+speaker_count = get_speaker_count()
+dataset_count = get_dataset_count()
 c1.metric("Medical Commands", "30")
-c2.metric("Speakers Trained", "2")
+c2.metric("Speakers Trained", str(speaker_count))
 c3.metric("Word Error Rate", "56.76%", delta="-14.41% vs baseline", delta_color="inverse")
 c4.metric("Command Accuracy", "37.50%", delta="+10.42% vs baseline")
 st.markdown("---")
